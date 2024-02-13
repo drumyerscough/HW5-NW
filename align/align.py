@@ -128,17 +128,30 @@ class NeedlemanWunsch:
         
         # TODO: Initialize matrix private attributes for use in alignment
         # create matrices for alignment scores, gaps, and backtracing
-        pass
 
-        
+        # Initialize the score matrix F
+        # here, F is a 3D matrix where the first layer is match, 2nd layer is
+        # insertion wrt seqA, and 3rd layer is insertion wrt seqB
+        F = np.zeros((len(seqA)+1, len(seqB)+1, 3)) - np.inf
+        F[:, 0, 1] = (np.arange(F.shape[0])-1)*self.gap_extend + self.gap_open
+        F[0, :, 2] = (np.arange(F.shape[1])-1)*self.gap_extend + self.gap_open
+        F[0, 0, :] = [0, -np.inf, -np.inf]
+
         # TODO: Implement global alignment here
-        pass      		
-        		    
+        for resi_A, resn_A in enumerate(seqA, start=1):
+            for resi_B, resn_B in enumerate(seqB, start=1):
+                F[resi_A, resi_B, 0] = np.max(F[resi_A-1, resi_B-1, :]) + self.sub_dict[(resn_A, resn_B)]
+                F[resi_A, resi_B, 1] = max(F[resi_A, resi_B-1, 0] + self.gap_open, F[resi_A, resi_B-1, 1]) + self.gap_extend
+                F[resi_A, resi_B, 2] = max(F[resi_A-1, resi_B, 0] + self.gap_open, F[resi_A-1, resi_B, 2]) + self.gap_extend
+        
+        self._backmat = np.argmax(F, axis=2)
+        self._F = np.max(F, axis=2)
+        print(self._F)
+        print(self._backmat)
         return self._backtrace()
 
     def _backtrace(self) -> Tuple[float, str, str]:
         """
-        TODO
         
         This function traces back through the back matrix created with the
         align function in order to return the final alignment score and strings.
@@ -150,8 +163,32 @@ class NeedlemanWunsch:
          	(alignment score, seqA alignment, seqB alignment) : Tuple[float, str, str]
          		the score and corresponding strings for the alignment of seqA and seqB
         """
-        pass
+        seqA_align = []
+        seqB_align = []
+        resi_A = len(self._seqA)
+        resi_B = len(self._seqB)
+        self.alignment_score = self._F[resi_A, resi_B]
+        
+        while resi_A > 0 or resi_B > 0:
+            move = self._backmat[resi_A, resi_B]
+            if move == 0: # match, go diagonal
+                    seqA_align.insert(0, self._seqA[resi_A-1])
+                    seqB_align.insert(0, self._seqB[resi_B-1])
+                    resi_A -= 1
+                    resi_B -= 1
+            elif move == 1: # insertion, go left
+                    seqA_align.insert(0, '-')
+                    seqB_align.insert(0, self._seqB[resi_B-1])
+                    resi_B -= 1
+            elif move == 2: # insertion, go up
+                    seqA_align.insert(0, self._seqA[resi_A-1])
+                    seqB_align.insert(0, '-')
+                    resi_A -= 1
+        
+        self.seqA_align = ''.join(seqA_align)
+        self.seqB_align = ''.join(seqB_align)
 
+        print(self.alignment_score, self.seqA_align, self.seqB_align)
         return (self.alignment_score, self.seqA_align, self.seqB_align)
 
 
