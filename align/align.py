@@ -146,8 +146,6 @@ class NeedlemanWunsch:
         
         self._backmat = np.argmax(F, axis=2)
         self._F = np.max(F, axis=2)
-        print(self._F)
-        print(self._backmat)
         return self._backtrace()
 
     def _backtrace(self) -> Tuple[float, str, str]:
@@ -188,7 +186,6 @@ class NeedlemanWunsch:
         self.seqA_align = ''.join(seqA_align)
         self.seqB_align = ''.join(seqB_align)
 
-        print(self.alignment_score, self.seqA_align, self.seqB_align)
         return (self.alignment_score, self.seqA_align, self.seqB_align)
 
 

@@ -1,4 +1,4 @@
-[![Project Tests](https://github.com/drumyerscough/HW5-NW/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/drumyerscough/HW5-NW/actions/workflows/ci.yml)
+[![Project Tests](https://github.com/drumyerscough/HW5-NW/actions/workflows/ci.yml/badge.svg)](https://github.com/drumyerscough/HW5-NW/actions/workflows/ci.yml)
 
 # Project 4
 Needleman Wunsch Algorithm
