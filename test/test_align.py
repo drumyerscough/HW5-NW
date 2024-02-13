@@ -15,7 +15,7 @@ def test_nw_alignment():
     seq1, _ = read_fasta("./data/test_seq1.fa")
     seq2, _ = read_fasta("./data/test_seq2.fa")
     nw = NeedlemanWunsch('substitution_matrices/BLOSUM62.mat', -10, -1)
-    assert (4.0, 'MYQR', 'M-QR') == nw.align()
+    assert (4.0, 'MYQR', 'M-QR') == nw.align(seq1, seq2)
     
 
 def test_nw_backtrace():
@@ -29,7 +29,7 @@ def test_nw_backtrace():
     seq3, _ = read_fasta("./data/test_seq3.fa")
     seq4, _ = read_fasta("./data/test_seq4.fa")
     nw = NeedlemanWunsch('substitution_matrices/BLOSUM62.mat', -10, -1)
-    assert (17.0, 'MAVHQLIRRP', 'M---QLIRHP') == nw.align()
+    assert (17.0, 'MAVHQLIRRP', 'M---QLIRHP') == nw.align(seq3, seq4)
 
 
 
