@@ -143,9 +143,9 @@ class NeedlemanWunsch:
                 F[resi_A, resi_B, 0] = np.max(F[resi_A-1, resi_B-1, :]) + self.sub_dict[(resn_A, resn_B)]
                 F[resi_A, resi_B, 1] = max(F[resi_A, resi_B-1, 0] + self.gap_open, F[resi_A, resi_B-1, 1]) + self.gap_extend
                 F[resi_A, resi_B, 2] = max(F[resi_A-1, resi_B, 0] + self.gap_open, F[resi_A-1, resi_B, 2]) + self.gap_extend
-        
         self._backmat = np.argmax(F, axis=2)
         self._F = np.max(F, axis=2)
+
         return self._backtrace()
 
     def _backtrace(self) -> Tuple[float, str, str]:
