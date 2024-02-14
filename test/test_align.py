@@ -20,10 +20,10 @@ def test_nw_alignment():
     assert (4.0, 'MYQR', 'M-QR') == nw.align(seq1, seq2)
 
     # test score matrix
-    assert nw._F == np.ndarray([[0, -10, -11, -12,],[-10,   5,  -6,  -7,],[-11,  -6,   4,  -7,],[-12,  -7,  -1,   5,],[-13,  -8,  -6,   4,]])
+    assert nw._F == np.ndarray((5,4), buffer=[[0, -10, -11, -12,],[-10,   5,  -6,  -7,],[-11,  -6,   4,  -7,],[-12,  -7,  -1,   5,],[-13,  -8,  -6,   4,]])
 
     # test backtrace matrix
-    assert nw._backmat == np.ndarray([[0, 2, 2, 2],[1, 0, 1, 1],[1, 2, 0, 1],[1, 2, 0, 0],[1, 2, 0, 0]])
+    assert nw._backmat == np.ndarray((5,4), buffer=[[0, 2, 2, 2],[1, 0, 1, 1],[1, 2, 0, 1],[1, 2, 0, 0],[1, 2, 0, 0]])
     
 
 def test_nw_backtrace():
